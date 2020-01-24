@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  
+  nginx:
+    #container_name: nginx
+    image: nginx-inverseproxy-loadbalance-osrm:1.0
+    build: ./nginx
+    restart: unless-stopped
+    depends_on:
+      - osrm_col
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - net_osrm
+
+  osrm_col:
+    image: osrm_col:1.0
+    build:
+      context: ./osrm
+      args:
+        - ARG_MAP_FOR_COUNTRY=${OSRM_COL_MAP_FOR_COUNTRY}
+        - ARG_REGIONAL_NAME=${OSRM_COL_REGIONAL_NAME}
+        - ARG_COUNTRY_NAME=${OSRM_COL_COUNTRY_NAME}
+    restart: always
+    ports:
+      - "5000"
+    command: sh /temp/running_osrm.sh
+    networks:
+      - net_osrm
+
+  osrm_chi:
+    image: osrm_chi:1.0
+    build:
+      context: ./osrm
+      args: 
+        - ARG_MAP_FOR_COUNTRY=${OSRM_CHI_MAP_FOR_COUNTRY}
+        - ARG_REGIONAL_NAME=${OSRM_CHI_REGIONAL_NAME}
+        - ARG_COUNTRY_NAME=${OSRM_CHI_COUNTRY_NAME}
+    restart: always
+    ports:
+      - "5000"
+    command: sh /temp/running_osrm.sh
+    networks:
+      - net_osrm
+
+networks:
+  net_osrm:
