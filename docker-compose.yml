@@ -20,13 +20,12 @@ services:
     build:
       context: ./osrm
       args:
-        - ARG_MAP_FOR_COUNTRY=${OSRM_COL_MAP_FOR_COUNTRY}
-        - ARG_REGIONAL_NAME=${OSRM_COL_REGIONAL_NAME}
-        - ARG_COUNTRY_NAME=${OSRM_COL_COUNTRY_NAME}
+        - REGIONAL_NAME=${OSRM_COL_REGIONAL_NAME}
+        - COUNTRY_NAME=${OSRM_COL_COUNTRY_NAME}
     restart: always
+    command: bash -c "osrm-routed --algorithm ch --max-table-size=100000 --max-viaroute-size=1000 --max-matching-size 1000 /data/${OSRM_COL_COUNTRY_NAME}.osrm"
     ports:
       - "5000"
-    command: sh /temp/running_osrm.sh
     networks:
       - net_osrm
 
@@ -35,13 +34,26 @@ services:
     build:
       context: ./osrm
       args: 
-        - ARG_MAP_FOR_COUNTRY=${OSRM_CHI_MAP_FOR_COUNTRY}
-        - ARG_REGIONAL_NAME=${OSRM_CHI_REGIONAL_NAME}
-        - ARG_COUNTRY_NAME=${OSRM_CHI_COUNTRY_NAME}
+        - REGIONAL_NAME=${OSRM_CHI_REGIONAL_NAME}
+        - COUNTRY_NAME=${OSRM_CHI_COUNTRY_NAME}
     restart: always
+    command: bash -c "osrm-routed --algorithm ch --max-table-size=100000 --max-viaroute-size=1000 --max-matching-size 1000 /data/${OSRM_CHI_COUNTRY_NAME}.osrm"
     ports:
       - "5000"
-    command: sh /temp/running_osrm.sh
+    networks:
+      - net_osrm
+
+  osrm_mex:
+    image: osrm_mex:1.0
+    build:
+      context: ./osrm
+      args: 
+        - REGIONAL_NAME=${OSRM_MEX_REGIONAL_NAME}
+        - COUNTRY_NAME=${OSRM_MEX_COUNTRY_NAME}
+    restart: always
+    command: bash -c "osrm-routed --algorithm ch --max-table-size=100000 --max-viaroute-size=1000 --max-matching-size 1000 /data/${OSRM_MEX_COUNTRY_NAME}.osrm"
+    ports:
+      - "5000"
     networks:
       - net_osrm
 

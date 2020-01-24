@@ -1,6 +1,6 @@
 FROM nginx
 
-MAINTAINER Sergio Santacruz <sergio.santacruz@smartquick.com.co>
+LABEL maintainer="Sergio Santacruz <sisantacruzm@gmail.com>"
 
 RUN apt-get update \
     && apt-get install curl -y
