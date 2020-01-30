@@ -3,6 +3,11 @@ version: "3.7"
 services:
   
   nginx:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     #container_name: nginx
     image: nginx-inverseproxy-loadbalance-osrm:1.0
     build: ./nginx
@@ -16,6 +21,11 @@ services:
       - net_osrm
 
   osrm_col:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     image: osrm_col:1.0
     build:
       context: ./osrm
@@ -30,6 +40,11 @@ services:
       - net_osrm
 
   osrm_chi:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     image: osrm_chi:1.0
     build:
       context: ./osrm
@@ -44,6 +59,11 @@ services:
       - net_osrm
 
   osrm_mex:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     image: osrm_mex:1.0
     build:
       context: ./osrm
